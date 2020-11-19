@@ -1,19 +1,26 @@
 import React from 'react';
-import {Container, Row} from 'react-bootstrap'
-import Dream from "../dreams/Dream"
+import {Container, Row, Col} from 'react-bootstrap'
+import Dream from "../dreams/Dream.js"
 
-
-function DreamsPanel() {
+const DreamsPanel = (props) => {
   return (
     <Container>
       <Row>
-        <Dream type="CAR" id={1}/>
-      </Row>
-      <Row>
-        <Dream type="HOUSE" id={2}/>
-      </Row>
-      <Row>
-        <Dream type="HEALTH" id={3}/>
+        <Col xs="2">
+          <Dream type="CAR" id="CAR"/>
+        </Col>
+        <Col xs="2">
+          <Dream type="HOUSE" id="HOUSE"/>
+        </Col>
+        <Col xs="2">
+          <Dream type="BABY" id="BABY"/>
+        </Col>
+        <Col xs="2">
+          <Dream type="HOSP" id="HOSP"/>
+        </Col>
+        <Col xs="2">
+          <Dream type="EDU" id="EDU"/>
+        </Col>
       </Row>
     </Container>
   );
