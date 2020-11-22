@@ -140,7 +140,7 @@ const PlanningChart = ({hideSourceOnDrag}) => {
       <Container ref={drop} style={{position: "absolute",
         height: chartInstance == null? 350 : chartInstance.chart.height-40}}>
         {Object.keys(dreams).map((key) => {
-          const { left, top, type } = dreams[key]
+          const { left, top, type, click } = dreams[key]
           return (
             <Dream
               id={key}
@@ -148,6 +148,7 @@ const PlanningChart = ({hideSourceOnDrag}) => {
               top={top}
               type={type}
               hideSourceOnDrag={hideSourceOnDrag}
+              click={click}
             >
             </Dream>
           )

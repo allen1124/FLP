@@ -29,7 +29,8 @@ const Dream = ({
 	left,
 	top,
 	connectDragSource,
-	isDragging
+  isDragging,
+  click
 }) => {
   if (isDragging && hideSourceOnDrag) {
 		return null;
@@ -49,7 +50,7 @@ const Dream = ({
     icon = <GiDiamondRing />;
   return connectDragSource(
     <div style={{position:"absolute", width:"min-content", left, top}}>
-      <Button id={id} style={{opacity: isDragging? 0.5:1}}>
+      <Button id={id} style={{opacity: isDragging? 0.5:1}} onClick={click}>
         <IconContext.Provider
           value={{ color: 'white', size: '25px' , display: 'inline-block' }}>
           {icon}
@@ -62,8 +63,8 @@ const Dream = ({
 export default DragSource(
 	ItemTypes.DREAM,
 	{
-		beginDrag({ id, left, top, type }) {
-			return { id, left, top, type }
+		beginDrag({ id, left, top, type, click }) {
+			return { id, left, top, type, click }
 		},
 	},
 	(connect, monitor) => ({
