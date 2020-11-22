@@ -8,13 +8,13 @@ import { HTML5Backend } from 'react-dnd-html5-backend'
 const PlanningPage = () => {
 
   return (
-    <Container fluid={true} style={{marginTop: 32}}>
-      <Row>
+    <Container fluid={true} style={{marginTop: 32, position: "absolute"}}>
+      <Row style={{position: "relative"}}>
         <DndProvider backend={HTML5Backend}>
           <Col xs={12} md={8} id="chart-wrapper" style={{height:500}}>
             <PlanningChart />
           </Col>
-          <Col xs={6} md={4} id="dream-board-wrapper">
+          <Col xs={0} md={4} id="dream-board-wrapper">
             <DreamsPanel/>
           </Col>
         </DndProvider>

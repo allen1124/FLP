@@ -1,17 +1,11 @@
 import React, { Component, useState, useEffect, useRef } from 'react';
 import Chartjs from 'chart.js';
+import {Container, Row, Col} from 'react-bootstrap';
 import Dream from '../dreams/Dream.js';
 import { XYCoord, useDrop } from 'react-dnd';
 import ItemTypes from '../../utils/ItemTypes';
 import update from 'immutability-helper';
 
-// export interface ContainerProps {
-// 	hideSourceOnDrag: boolean
-// }
-
-// export interface ContainerState {
-// 	dreams: { [id: string]: { top: number; left: number; } }
-// }
 const chartConfig = (ctx) => {
   const gradient = ctx.createLinearGradient(0, 0, 0, 400);
   gradient.addColorStop(1, "rgba(128, 255, 251, 0)");
@@ -78,39 +72,54 @@ const chartConfig = (ctx) => {
     }
   });
 }
-// interface DragItem {
-//   type: string
-// 	id: string
-// 	top: number
-// 	left: number
-// }
+function getRandomInt(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+const randomData = (oldData) => {
+  return oldData.map((xy) => {
+    return ({
+      x: xy.x,
+      y: xy.y+getRandomInt(-20, 20)
+    });
+  });
+}
 const PlanningChart = ({hideSourceOnDrag}) => {
-  const [dreams, setDreams] = useState({
-		"CAR": { top: 20, left: 80 }
-	});
+  const [dreams, setDreams] = useState({});
   const chartContainer = useRef(null);
   const [chartInstance, setChartInstance] = useState(null);
 
-  const [, drop] = useDrop({
+  const [{isOver}, drop] = useDrop({
 		accept: ItemTypes.DREAM,
 		drop(item, monitor) {
-			const delta = monitor.getDifferenceFromInitialOffset()
-			const left = Math.round(item.left + delta.x)
-			const top = Math.round(item.top + delta.y)
-			moveDream(item.id, left, top)
+      let left, top, delta;
+      console.log(chartInstance);
+      if(item.top == 0){
+        delta = monitor.getDifferenceFromInitialOffset();
+        console.log("delta", delta)
+        left = Math.round(item.left + delta.x + 840);
+        top = Math.round(item.top + delta.y);
+        console.log("left, top", left, top);
+      }else{
+        delta = monitor.getDifferenceFromInitialOffset();
+			  left = Math.round(item.left + delta.x);
+        top = Math.round(item.top + delta.y);
+      }
+			moveDream(item.id, left, top, item.type)
 			return undefined
-		},
-	})
+    },
+    collect: (monitor) => ({
+      isOver: !!monitor.isOver()
+    })
+  })
 
-
-  const moveDream = (id, left, top) => {
-		setDreams(
-			update(dreams, {
-				[id]: {
-					$merge: { left, top },
-				},
-			}),
-		)
+  const moveDream = (id, left, top, type) => {
+		setDreams({
+			...dreams,
+			[id]: { left, top, type }
+    });
+    updateDataset(0, randomData(chartInstance.data.datasets[0].data));
 	}
   useEffect(() => {
     const ctx = document.getElementById("planningChart").getContext("2d");
@@ -126,24 +135,24 @@ const PlanningChart = ({hideSourceOnDrag}) => {
   };
 
   return(
-    <div>
-      <canvas id={"planningChart"} ref={chartContainer} />
-      <div ref={drop}>
+    <Container style={{position: "relative", height: "inherit"}}>
+      <canvas id={"planningChart"} ref={chartContainer} style={{position: "absolute"}} />
+      <Container ref={drop} style={{position: "absolute", height: "inherit"}}>
         {Object.keys(dreams).map((key) => {
-          const { left, top } = dreams[key]
+          const { left, top, type } = dreams[key]
           return (
             <Dream
               id={key}
               left={left}
               top={top}
-              type={key}
+              type={type}
               hideSourceOnDrag={hideSourceOnDrag}
             >
             </Dream>
           )
         })}
-      </div>
-    </div>
+      </Container>
+    </Container>
   )
 }
 

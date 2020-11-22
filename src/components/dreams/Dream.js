@@ -19,7 +19,6 @@ const Button = styled.button`
   font-size: 16px;
   justify-content: center;
   display:block;
-  margin: 10px;
   outline: none;
 `;
 
@@ -47,20 +46,22 @@ const Dream = ({
   if(type == "EDU")
     icon = <FaSchool />;
   return connectDragSource(
-    <Button id={id} style={{opacity: isDragging? 0.5:1, left, top}}>
-      <IconContext.Provider
-        value={{ color: 'white', size: '25px' , display: 'inline-block' }}>
-        {icon}
-      </IconContext.Provider>
-    </Button>
+    <div style={{position:"absolute", width:"min-content", left, top}}>
+      <Button id={id} style={{opacity: isDragging? 0.5:1}}>
+        <IconContext.Provider
+          value={{ color: 'white', size: '25px' , display: 'inline-block' }}>
+          {icon}
+        </IconContext.Provider>
+      </Button>
+    </div>
   );
 }
 
 export default DragSource(
 	ItemTypes.DREAM,
 	{
-		beginDrag({ id, left, top }) {
-			return { id, left, top }
+		beginDrag({ id, left, top, type }) {
+			return { id, left, top, type }
 		},
 	},
 	(connect, monitor) => ({
