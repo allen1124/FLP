@@ -1,8 +1,8 @@
-import React, { Component, useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Chartjs from 'chart.js';
-import {Container, Row, Col} from 'react-bootstrap';
+import {Container} from 'react-bootstrap';
 import Dream from '../dreams/Dream.js';
-import { XYCoord, useDrop } from 'react-dnd';
+import { useDrop } from 'react-dnd';
 import ItemTypes from '../../utils/ItemTypes';
 import update from 'immutability-helper';
 
@@ -137,7 +137,8 @@ const PlanningChart = ({hideSourceOnDrag}) => {
   return(
     <Container style={{position: "relative", height: "inherit"}}>
       <canvas id={"planningChart"} ref={chartContainer} style={{position: "absolute"}} />
-      <Container ref={drop} style={{position: "absolute", height: "inherit"}}>
+      <Container ref={drop} style={{position: "absolute",
+        height: chartInstance == null? 350 : chartInstance.chart.height-40}}>
         {Object.keys(dreams).map((key) => {
           const { left, top, type } = dreams[key]
           return (

@@ -3,9 +3,9 @@ import styled from 'styled-components';
 import { AiFillCar } from 'react-icons/ai';
 import { BsHouseFill } from 'react-icons/bs';
 import { FaBaby, FaHospital, FaSchool } from 'react-icons/fa';
+import { GiDiamondRing } from 'react-icons/gi';
 import { IconContext } from "react-icons";
-import { ConnectDragSource } from 'react-dnd'
-import { DragSource } from 'react-dnd'
+import { DragSource } from 'react-dnd';
 import ItemTypes from '../../utils/ItemTypes';
 
 const Button = styled.button`
@@ -45,6 +45,8 @@ const Dream = ({
     icon = <FaHospital />;
   if(type == "EDU")
     icon = <FaSchool />;
+  if(type == "WEDDING")
+    icon = <GiDiamondRing />;
   return connectDragSource(
     <div style={{position:"absolute", width:"min-content", left, top}}>
       <Button id={id} style={{opacity: isDragging? 0.5:1}}>
